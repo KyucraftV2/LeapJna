@@ -15,6 +15,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Arrays;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -41,6 +45,10 @@ class RenderPanel extends JPanel
 	private int framerate;
 
 	private boolean drawImages;
+	private final PrintWriter writer = new PrintWriter(new FileWriter("C:\\Users\\killian\\Desktop\\LeapJna\\src\\main\\java\\komposten\\leapjna\\example\\saveXYZ.txt"),true);
+
+	RenderPanel() throws IOException {
+	}
 
 	public void setState(State state)
 	{
@@ -257,7 +265,9 @@ class RenderPanel extends JPanel
 		for (int i = 0; i < data.nHands; i++)
 		{
 			LEAP_HAND hand = data.getHands()[i];
-
+			if(i==0){
+				writer.printf("%f %f %f\n", hand.digits.middle.boneArray()[3].next_joint.x, hand.digits.middle.boneArray()[3].next_joint.y, hand.digits.middle.boneArray()[3].next_joint.z);
+			}
 			float roll = hand.palm.orientation.getRoll();
 			float pitch = hand.palm.orientation.getPitch();
 			float yaw = hand.palm.orientation.getYaw();

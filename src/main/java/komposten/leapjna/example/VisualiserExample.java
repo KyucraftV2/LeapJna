@@ -14,6 +14,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -28,7 +29,7 @@ import komposten.leapjna.leapc.events.LEAP_TRACKING_EVENT;
 class VisualiserExample
 {
 	private JFrame window;
-	private VisualiserBackend backend;
+	VisualiserBackend backend;
 	private RenderPanel renderPanel;
 	private LogPanel logPanel;
 	private Thread leapJnaThread;
@@ -36,8 +37,7 @@ class VisualiserExample
 
 	private boolean imagesEnabled;
 
-	public VisualiserExample()
-	{
+	public VisualiserExample() throws IOException {
 		backend = new VisualiserBackend(visualiserListener);
 
 		buildUi();
@@ -89,8 +89,7 @@ class VisualiserExample
 	}
 
 
-	private void buildUi()
-	{
+	private void buildUi() throws IOException {
 		window = new JFrame("LeapJna - 2D visualiser");
 		window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		window.setSize(500, 500);
@@ -222,8 +221,7 @@ class VisualiserExample
 	};
 
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) throws IOException {
 		new VisualiserExample();
 	}
 }
