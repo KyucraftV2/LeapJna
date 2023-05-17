@@ -47,6 +47,9 @@ class RenderPanel extends JPanel
 	private boolean drawImages;
 	private final PrintWriter writer = new PrintWriter(new FileWriter("C:\\Users\\killian\\Desktop\\LeapJna\\src\\main\\java\\komposten\\leapjna\\example\\saveXYZ.txt"),true);
 
+	private final LSL.StreamInfo info = new LSL.StreamInfo("LeapMotion", "EEG", 3, 120,LSL.ChannelFormat.float32, "LeapMotion");
+	private final LSL.StreamOutlet outlet = new LSL.StreamOutlet(info);
+
 	RenderPanel() throws IOException {
 	}
 
@@ -267,7 +270,10 @@ class RenderPanel extends JPanel
 			LEAP_HAND hand = data.getHands()[i];
 			if(i==0){
 				writer.printf("%f %f %f\n", hand.digits.middle.boneArray()[3].next_joint.x, hand.digits.middle.boneArray()[3].next_joint.y, hand.digits.middle.boneArray()[3].next_joint.z);
+				float[] sample = {hand.digits.middle.boneArray()[3].next_joint.x, hand.digits.middle.boneArray()[3].next_joint.y, hand.digits.middle.boneArray()[3].next_joint.z};
+				outlet.push_sample(sample);
 			}
+			System.out.println(info.channel_count());
 			float roll = hand.palm.orientation.getRoll();
 			float pitch = hand.palm.orientation.getPitch();
 			float yaw = hand.palm.orientation.getYaw();
