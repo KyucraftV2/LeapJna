@@ -1,4 +1,5 @@
 This project is a fork from initial project to integrate last version of SDK Ultraleap
+Work in process
 
 # LeapJna
 
