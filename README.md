@@ -1,3 +1,5 @@
+This project is a fork from initial project to integrate last version of SDK Ultraleap
+
 # LeapJna
 
 [![Java CI](https://github.com/Komposten/LeapJna/workflows/Java%20CI/badge.svg?branch=unit-testing)](https://github.com/Komposten/LeapJna/actions?query=workflow%3A"Java+CI") [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Komposten_LeapJna&metric=alert_status)](https://sonarcloud.io/dashboard?id=Komposten_LeapJna) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Komposten_LeapJna&metric=coverage)](https://sonarcloud.io/dashboard?id=Komposten_LeapJna) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Komposten_LeapJna&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Komposten_LeapJna)
