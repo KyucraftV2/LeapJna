@@ -7,16 +7,25 @@ import komposten.leapjna.leapc.enums.eLeapPolicyFlag;
 import komposten.leapjna.leapc.enums.eLeapRS;
 import komposten.leapjna.leapc.events.*;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 
 public class TestClass {
-    private static final LSL.StreamInfo info = new LSL.StreamInfo("LeapMotion", "EEG", 3, 120, LSL.ChannelFormat.float32, "LeapMotion");
-    private static final LSL.StreamOutlet outlet;
+    private static final LSL.StreamOutlet outletPaume;
+    private static final LSL.StreamOutlet outletPoignet;
+    private static final LSL.StreamOutlet outletMajeurDistal;
+    private static final LSL.StreamOutlet outletMajeurIntermediate;
+    private static final PrintWriter writer;
 
     static {
         try {
-            outlet = new LSL.StreamOutlet(info);
+            writer = new PrintWriter(new FileWriter("C:\\Users\\killian\\Desktop\\LeapJna\\src\\main\\java\\komposten\\leapjna\\example\\saveXYZ.txt"), true);
+            outletPaume = createOutlet("Paume", "MoCap", 3, 120);
+            outletPoignet = createOutlet("Poignet", "MoCap", 3, 120);
+            outletMajeurDistal = createOutlet("MajeurFin", "MoCap", 3, 120);
+            outletMajeurIntermediate = createOutlet("MajeurMilieu", "MoCap", 3, 120);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -25,8 +34,13 @@ public class TestClass {
     public TestClass() throws IOException {
     }
 
+    public static LSL.StreamOutlet createOutlet(String name, String type, int channel_count, double srate) throws IOException {
+        LSL.StreamInfo info = new LSL.StreamInfo(name, type, channel_count, srate, LSL.ChannelFormat.float32, name);
+        return new LSL.StreamOutlet(info);
+
+    }
+
     public static void main(String[] args) {
-        LEAP_TRACKING_EVENT data = new LEAP_TRACKING_EVENT();
         LEAP_CONNECTION leapConnection = new LEAP_CONNECTION();
 
         //Create connection
@@ -35,7 +49,7 @@ public class TestClass {
 
         if (result == eLeapRS.Success) {
             doPollLoop(leapConnection);
-            System.out.println(result);
+
         }
 
     }
@@ -244,11 +258,20 @@ public class TestClass {
     private static void handleFrame(LEAP_TRACKING_EVENT trackingEvent) {
         LEAP_HAND[] hand = trackingEvent.getHands();
         if (hand.length > 0) {
-            LEAP_DIGIT majeur = hand[0].digits.middle;
-            LEAP_BONE dernierePhalange = majeur.distal;
-            System.out.println(dernierePhalange.next_joint.x + " " + dernierePhalange.next_joint.y + " " + dernierePhalange.next_joint.z);
-            float[] sample = {dernierePhalange.next_joint.x, dernierePhalange.next_joint.y, dernierePhalange.next_joint.z};
-            outlet.push_sample(sample);
+            LEAP_PALM palm = hand[0].palm;
+            LEAP_BONE dernierePhalange = hand[0].digits.middle.distal;
+            LEAP_BONE phalangeIntermediaire = hand[0].digits.middle.intermediate;
+            LEAP_BONE poignet = hand[0].arm;
+            System.out.println(palm.position.x + " " + palm.position.y + " " + palm.position.z);
+            float[] samplePaume = {palm.position.x, palm.position.y, palm.position.z};
+            float[] sampleDistal = {dernierePhalange.next_joint.x, dernierePhalange.next_joint.y, dernierePhalange.next_joint.z};
+            float[] samplePoignet = {poignet.next_joint.x, poignet.next_joint.y, poignet.next_joint.z};
+            float[] sampleIntermediate = {phalangeIntermediaire.next_joint.x,phalangeIntermediaire.next_joint.y,phalangeIntermediaire.next_joint.z};
+            outletPaume.push_sample(samplePaume);
+            outletMajeurDistal.push_sample(sampleDistal);
+            outletPoignet.push_sample(samplePoignet);
+            outletMajeurIntermediate.push_sample(sampleIntermediate);
+            writer.println(palm.position.x + " " + palm.position.y + " " + palm.position.z);
         }
     }
 

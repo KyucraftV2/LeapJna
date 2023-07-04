@@ -10,9 +10,9 @@ import java.io.IOException;
 /**
  * Java API for the lab streaming layer.
  *
- * The lab streaming layer provides a set of functions to make instrument data accessible
- * in real time within a lab network. From there, streams can be picked up by recording programs,
- * viewing programs or custom experiment applications that access data streams in real time.
+ * The lab streaming lareams can be picked up by recording programs,
+ * viewing programs or custom experiment applications thatyer provides a set of functions to make instrument data accessible
+ *  * in real time within a lab network. From there, st access data streams in real time.
  *
  * The API covers two areas:
  * - The "push API" allows to create stream outlets and to push data (regular or irregular measurement
