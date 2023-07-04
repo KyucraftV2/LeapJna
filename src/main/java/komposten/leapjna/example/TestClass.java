@@ -17,11 +17,9 @@ public class TestClass {
     private static final LSL.StreamOutlet outletPoignet;
     private static final LSL.StreamOutlet outletMajeurDistal;
     private static final LSL.StreamOutlet outletMajeurIntermediate;
-    private static final PrintWriter writer;
 
     static {
         try {
-            writer = new PrintWriter(new FileWriter("C:\\Users\\killian\\Desktop\\LeapJna\\src\\main\\java\\komposten\\leapjna\\example\\saveXYZ.txt"), true);
             outletPaume = createOutlet("Paume", "MoCap", 3, 120);
             outletPoignet = createOutlet("Poignet", "MoCap", 3, 120);
             outletMajeurDistal = createOutlet("MajeurFin", "MoCap", 3, 120);
@@ -271,7 +269,6 @@ public class TestClass {
             outletMajeurDistal.push_sample(sampleDistal);
             outletPoignet.push_sample(samplePoignet);
             outletMajeurIntermediate.push_sample(sampleIntermediate);
-            writer.println(palm.position.x + " " + palm.position.y + " " + palm.position.z);
         }
     }
 
